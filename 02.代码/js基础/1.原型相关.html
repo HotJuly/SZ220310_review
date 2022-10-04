@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            构造函数
+                通过声明函数,是无法区分清楚到底是不是构造函数的
+                只有在调用该函数的时候,可以知道
+                    如果是用new调用,就是构造函数
+
+            内存分为栈内存和堆内存
+                栈内存
+                    栈内存中只能存放标识,基础数据类型数据,地址值
+
+                堆内存
+                    堆内存中可以存放对象数据类型(引用数据类型)
+
+                注意:
+                    1.其实变量和函数名是同一个东西,统称标识
+                    2.堆内存中,也可以存放基础数据类型,不过需要通过对象的属性进行存储
+        */
+       /*
+        原型相关
+            1.每个对象都有隐式原型属性
+            2.每个构造函数都有显式原型属性
+            3.每个对象的隐式原型都指向构造函数的显式原型
+            4.每个原型对象都具有constructor属性指向对应的构造函数
+
+            注意:每个构造函数创建的同时会创建一个伴生的原型对象
+       
+        原型的作用
+            当前构造函数创建的实例对象都可以享受到原型对象身上所有的东西
+                减少内存的开销,多个实例对象共享一个方法效果
+
+
+        new做的事情
+            1.将实参的数据传入形参
+            2.自动声明this,同时向this中注入实例对象
+            3.将构造函数这一瞬间的显式原型属性的值复制一份给实例对象的隐式原型属性
+            4.默认return this
+                如果return基础数据类型不会有任何影响
+                如果return对象数据类型,那么就不会返回实例对象,会返回当前结果
+       */
+        function Person(name){
+            this.name = name
+            // this.eat = function(){
+            //     console.log('eat')
+            // }
+            // return {
+            //     name:"小绿"
+            // };
+        }
+
+        // Person.prototype.eat = function(){
+        //     console.log('eat')
+        // }
+
+        // // function person(){
+        // // }
+
+        var p1 = new Person("xiaoming");
+        // var p2 = new Person("xiaoming");
+        // var p3 = new Person("xiaoming");
+        // var p4 = new Person("xiaoming");
+        console.log(p1)
+
+        
+        function Person1(name){
+            var that = {};
+            that.name = name
+            // this.eat = function(){
+            //     console.log('eat')
+            // }
+            that.__proto__ = Person1.prototype;
+            return that;
+        }
+
+        var p5 = Person1('xiaowang');
+        console.log(p5)
+    </script>
+</body>
+</html>

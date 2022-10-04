@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            现象:如果一个实例对象使用某个属性的时候,自己没有该属性,就会顺着自己的__proto__属性,
+                向上查找,去原型对象上查找
+
+            注意:
+                1.有没有修改原型对象的操作
+                    是换了原型对象,还是修改了某个属性
+
+                2.换原型对象的时间是在new之前还是new之后
+        
+        
+        */
+        function Person(name){
+            this.name = name
+        }
+
+        // Person.prototype.c = 1;
+        // Person.prototype = {
+        //     c:1
+        // };
+
+        var p1 = new Person("xiaoming");
+        // Person.prototype.c = 1;
+        Person.prototype = {
+            c:1
+        };
+        
+        var p2 = new Person("xiaoming");
+
+        console.log('p2',p1.c,p2.c)
+    </script>
+</body>
+</html>
