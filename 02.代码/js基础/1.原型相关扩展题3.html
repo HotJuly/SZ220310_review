@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            如果将一个基础数据类型的数据当作对象使用,那么js引擎就会创建出一个对应的包装类对象
+                注意:但是这个对象在操作完之后会立即销毁,不会保留
+                    这里指的是number,string,boolean三者
+        */
+        var str = "hello";
+        str.title = "world";
+        console.log(str + str.title)
+        
+        var num = 123;
+        num.count = 4;
+        console.log(num + num.count)
+    </script>
+</body>
+</html>

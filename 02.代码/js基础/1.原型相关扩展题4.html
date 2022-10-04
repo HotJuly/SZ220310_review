@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 笔试题:现在给你一个变量data,内部存有数据,请问如何知道他的数据类型?
+        /*
+            1.typeof data
+                返回值数据类型:string
+                返回值:"number","string","boolean","undefined","object","symbol","function"
+        
+            2.A instanceof B
+                A是不是B类型的实例对象
+                返回值数据类型:布尔值
+
+                缺点:只能检查他是不是某种数据类型,无法区分是什么数据类型?
+
+            3.对象的toString方法
+                
+        */
+        // var obj = {
+        //     name:"xiaoming"
+        // };
+        // var data = [1,2,3];
+        var data = new Date();
+        const result = Object.prototype.toString.call(data).split(" ")[1].replace("]","");
+        console.log(result)
+    </script>
+</body>
+</html>

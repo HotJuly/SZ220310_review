@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+        // 语法糖
+        // {} -> new Object
+        // [] -> new Array
+        // function -> new Function
+
+    /*
+        1.万物皆对象
+            除了基础数据类型以外,都是对象
+        2.所有的对象都是Object的实例对象
+        3.所有的函数都是Function的实例对象
+            包括他自己(???)
+        4.函数是一等公民,它既是函数又是对象
+    */
+      function Foo() {
+        console.log('foo')
+      }
+      console.log(Foo)
+      const f1 = new Foo();
+
+      const o1 = {};
+    //   const o2 = new Object();
+
+    //   Foo instanceof Object;     true
+    //   Foo instanceof Function;   true
+    //   Object instanceof Object;  true
+    //   Function instanceof Function;  true
+    //   Function instanceof Object;    true
+
+    //   Object instanceof Foo; false
+    //   f1 instanceof Function;    false
+    //   f1 instanceof Object;  true
+
+    /*
+        Javascript底层其实是C语言
+            JS中用C语言写的东西有哪些:
+                1.Object
+                2.Function
+                3.Function.prototype
+
+            JS终极原型链图中,作者修改的几条线:
+                1.Function.__proto__ === Function.prototype
+                    目的有两个
+                        1.为了让Function能够使用到所有函数都能使用的方法
+                        2.身份证明,证明自己是一个函数
+
+                2.Object.__proto__ === Function.prototype
+                        同1
+
+                3.Function.prototype.__proto__ === Object.prototype
+                    如果没有这条线的话,js原型链就会出现两个顶点
+                        而且函数就不再是对象
+
+                4.Object.prototype.__proto__ === null
+                    当前这条线必须要有,不然所有对象从原型链上找属性,都会进入死循环
+
+            问题:什么是伪数组?
+            回答:
+                1.都使用下标存储数据
+                2.都具有length属性
+                3.但是伪数组不能使用数组的方法
+                    伪数组的原型链上,不存在数组的原型对象
+    */
+    </script>
+  </body>
+</html>
