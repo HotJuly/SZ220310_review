@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            在编程界中,一共存在两种作用域
+                词法作用域(又称为静态作用域)
+                    当前函数中使用某个变量,他的作用域跟函数的声明位置有关,与调用位置无关
+
+                动态作用域
+                    当前函数中使用某个变量,他的作用域跟函数的声明位置无关,与调用位置有关
+
+            作用域相关
+                1.什么是作用域?
+                    约束变量的可见范围
+                    某个变量的使用范围
+
+                    注意:js中,只存在词法作用域,不存在动态作用域
+
+                2.预解析(变量提升)
+                    1.变量提升
+                        变量提升,只是局部提升,只会将标识的声明进行提升,
+                            标识的赋值依旧留在原地
+
+                    2.函数提升
+                        函数提升,是整体提升,不仅会将标识的声明进行提升,
+                            同时还会将标识的赋值也进行提升
+                            
+                    注意:
+                        1.一定要区分请求标识的声明和标识的赋值
+                        2.函数表达式是变量提升,只会将标识的声明进行提升
+
+                3.预解析的优先级
+                    函数提升优先于变量提升
+
+                4.预解析的提升范围
+                    会将变量提升至当前作用域的最顶端,不会穿透作用域
+                        而且查找变量的时候,只会从内向外找,不会从外向内找
+
+                5.作用域类型
+                    1.全局作用域
+                    2.局部作用域(又称为函数作用域)
+                    3.块级作用域
+                        在代码中使用let或者const都会生成块级作用域
+                            let或者const必须配合外面的{}使用
+                                let声明的变量只能在该大括号中使用,外界无法访问
+
+                6.函数形参默认值
+                    只要给函数添加形参默认值,那么函数体内部的代码就会存入块级作用域中
+        */
+
+        // var a = 1;
+
+        // function wrap(){
+        //     var a = 2;
+
+        //     function inner(){
+        //         console.log('a',a)
+        //     }
+
+        //     return inner
+        // }
+
+        // var fn = wrap();
+        // fn();
+
+        //-------------------
+        // console.log('a',a)
+        // var a = 1;
+
+        // var a;
+        // console.log('a',a)
+        // a = 1;
+
+        //-------------------
+        // console.log('a',a)
+        // function a(){
+        //     console.log('1111')
+        // }
+
+        // function a(){
+        //     console.log('1111')
+        // }
+        // console.log('a',a)
+
+        //----------------------
+        // 以下代码称为函数表达式
+        // console.log('a',a)
+        // var a = function(){
+        //     console.log('111')
+        // }
+
+        // var a;
+        // console.log('a',a)
+        // a = function(){
+        //     console.log('111')
+        // }
+
+        //----------------------
+        // var a = 1;
+
+        // console.log('a',a)
+
+        // var a = function(){
+        //     console.log('2')
+        // }
+
+        // function a(){
+        //     console.log('3')
+        // }
+
+
+        // function a(){
+        //     console.log('3')
+        // }
+        // var a
+        // var a
+        // a = 1;
+
+        // console.log('a',a)
+        
+        // a = function(){
+        //     console.log('2')
+        // }
+
+        //---------------
+        // var a = 1;
+
+        // function wrap(){
+        //     console.log(a,b)
+        //     var a = 2;
+        //     var b = 3;
+        // }
+
+        // wrap();
+
+        // console.log(a,b);
+
+        //-------
+        // function wrap(){
+        //     var a
+        //     var b
+        //     console.log(a,b)
+        //     a = 2;
+        //     b = 3;
+        // }
+        // var a
+        // a = 1;
+
+        // wrap();
+
+        // console.log(a,b);
+
+        // ------------------------------
+        // var a = 1;
+        // var obj = {
+        //     a:2,
+        //     fn:function(){
+        //         console.log('a1',a)
+        //     }
+        // }
+
+        // obj.fn();
+        // console.log('a2',a)
+
+        //----------
+        // var a = 1;
+        // let obj = {
+        //     a:2,
+        //     fn:function(){
+        //         console.log('a1',a);
+        //     }
+        // }
+
+        // obj.fn();
+        // console.log('a2',a)
+
+        // if(true){
+        //     let b = 1
+        //     console.log(b)
+        // }
+
+        // console.log(b)
+
+        //------------------
+        // 形参其实就是当前函数中的变量
+        // function a(x,y = 4){
+        //     console.log(x,y)
+        //     var x = 1;
+        //     var y = 2;
+        //     console.log(x,y)
+        // }
+        // a();
+
+        //--------------------------
+        // var x = 1;
+        // function a(x,y = function(){x=3;console.log('two',x)}){
+        //     console.log('one',x)
+        //     var x = 2;
+        //     y();
+        //     console.log('three',x)
+        // }
+        // a();
+        // console.log('four',x)
+        //--------- 
+
+
+        // var x = 1;
+        // function a(x,y = function(){x=3;console.log('two',x)}){
+        //     console.log('one',x)
+        //     // var x = 2;
+        //     y();
+        //     console.log('three',x)
+        // }
+        // a();
+        // console.log('four',x)
+
+        //---------
+        
+        // var x = 1;
+        // function a(xx,y = function(){x=3;console.log('two',x)}){
+        //     console.log('one',x)
+        //     var x = 2;
+        //     y();
+        //     console.log('three',x)
+        // }
+        // a();
+        // console.log('four',x)
+
+        //--------
+        
+        // var x = 1;
+        // function a(x = 4,y = function(){x=3;console.log('two',x)}){
+        //     console.log('one',x)
+        //     var x = 2;
+        //     y();
+        //     console.log('three',x)
+        // }
+        // a();
+        // console.log('four',x)
+
+        // function a(x=4){
+        //     console.log('x',x)
+        //     var x = 2;
+        // }
+        // a();
+
+    </script>
+</body>
+</html>
