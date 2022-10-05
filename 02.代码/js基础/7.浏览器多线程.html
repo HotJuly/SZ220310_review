@@ -16,28 +16,53 @@
       aaaaaaa
   </div>
   <script>
-      Promise.resolve().then(() => { // ?任务
+    /*
+        页面渲染相关
+            执行顺序:首先执行主线程代码->清空微任务队列->GUI线程渲染页面->执行下一个宏任务
+            页面更新:清空微任务队列->GUI线程渲染页面->执行下一个宏任务
+
+        页面渲染是由GUI线程负责的
+        GUI线程与JS引擎(线程)是互斥的,不会同时工作
+
+        问题:为什么有宏任务的情况下,还要新增微任务?
+        回答:
+            1.如果只有宏任务,那么如果两个宏任务都修改了DOM结构,那么GUI线程就会渲染两次
+            2.如果有了微任务,那么无论在微任务中修改多少次DOM结果,页面也只会渲染一次
+
+        扩展:Vue更新数据同步更新,更新DOM节点是异步更新
+            其实Vue更新DOM其实是微任务
+    
+    
+    */
+      Promise.resolve().then(() => { // 微任务
           alert('promise1') // 页面渲染了吗?
       }) 
 
-      Promise.resolve().then(() => { // ?任务
+      Promise.resolve().then(() => { // 微任务
           alert('promise2') // 页面渲染了吗?
       }) 
 
-      setTimeout(() => {// ?任务
+      setTimeout(() => {// 宏任务
           alert(document.getElementById('content').innerHTML)  // 页面渲染了吗?
       }, 0)
 
-      document.getElementById('test').onclick = () => {// ?任务
+      document.getElementById('test').onclick = () => {// 宏任务
+          document.getElementById('content').innerHTML = 'xxxx'
+          document.getElementById('content').innerHTML = 'xxxx1'
+          document.getElementById('content').innerHTML = 'xxxx2'
+          document.getElementById('content').innerHTML = 'xxxx3'
+          document.getElementById('content').innerHTML = 'xxxx4'
+          document.getElementById('content').innerHTML = 'xxxx5'
           document.getElementById('content').innerHTML = 'xxxx'
 
+        //   页面的渲染是异步操作
           alert(document.getElementById('content').innerHTML)
 
-          setTimeout(() => {// ?任务  
+          setTimeout(() => {// 宏任务  
               alert(document.getElementById('content').innerHTML) // 页面更新渲染了吗?
           }, 0); 
 
-          Promise.resolve().then(() => { // ?任务 
+          Promise.resolve().then(() => { // 微任务 
               alert('promise3') //页面更新渲染了吗?
           }) 
       }
