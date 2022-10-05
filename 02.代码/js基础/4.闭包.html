@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+        闭包
+            1.闭包的产生条件
+                1.外部函数嵌套内部函数
+                2.内部函数使用了外部函数的变量
+                
+                闭包分为两种
+                    有效闭包
+                        如果将内部函数return出去,那么该闭包就会被长久保留,就是有效闭包
+
+                    无效闭包
+                        即使没有讲内部函数return出去,只要满足以上的所有产生条件,
+                        那么就会产生闭包,只是这个闭包只会存活极短的时间,就是无效闭包
+            
+            2.闭包的产生时机
+                外部函数调用的时候
+                内部函数声明的时候
+                    执行了内部函数的定义时候
+
+            3.闭包的优点(用处)
+                1.延长了变量的生命周期
+                    本来外层函数执行结束的时候,外层函数的执行上下文应该要被销毁,
+                    连带着里面的所有变量都要销毁,但是最终变量被闭包成功保留,没有被销毁
+
+                2.可以实现js模块化
+                    使用闭包将某些数据缓存起来,变为私有数据,其他人无法修改
+                    例如:JQuery
+        
+        */
+       /*
+        执行上下文
+            执行上下文中,具有执行当前函数所需要的内存空间,还有变量对象
+                变量对象会收集当前函数中所有的变量以及他们的变量值
+                    函数中如果需要读取或者修改某个变量的值,都会到变量对象中进行查找
+
+            创建时机
+                当前函数调用的时候
+
+            销毁时机
+                当前函数调用结束之后,立即销毁
+       */
+
+        //---------------------
+        // 该案例,证明了无论是否return函数,都会产生闭包
+        // function wrap(){
+        //     var a = 1;
+        //     function inner(){
+        //         console.log('a',a)
+        //     }
+
+        //     // console.log('inner',inner)
+        //     return inner;
+        // }
+
+        // var result = wrap();
+
+        //--------------------------
+        // 该案例,证明了闭包的创建时机
+        // function wrap(){
+
+        //     var a = 1;
+
+        //     var inner = function (){
+        //         console.log('a',a)
+        //     }
+
+        //     return inner;
+        // }
+
+        // var result = wrap();
+
+        
+        //--------------------------
+        // 该案例,用于证明执行上下文相关的内容
+        // function a(){
+        //     var x = 1;
+        //     x++;
+        //     console.log('x',x)
+        // }
+        // a();
+        // a();
+
+        // function a(){
+        //     function b(){
+        //         console.log('x',x)
+        //     }
+        //     var x;
+        //     x = 1;
+        //     b();
+        // }
+        // a();
+        //--------------------------
+        // 该案例,说明早期闭包实现js模块化的操作
+        // (function(){
+        //     var a = 1;
+
+        //     function addA(){
+        //         a++;
+        //     }
+
+        //     function getA(){
+        //         console.log(a)
+        //     }
+
+        //     window.fns={
+        //         addA,
+        //         getA
+        //     }
+        // })();
+
+        // fns.addA();
+        // fns.getA();
+        //--------------------------
+        function wrap(){
+
+            function inner(){
+                console.log('a',a)
+            }
+
+            var a = 1;
+
+            return inner;
+        }
+
+        var result = wrap();
+        result();
+
+
+    </script>
+</body>
+</html>

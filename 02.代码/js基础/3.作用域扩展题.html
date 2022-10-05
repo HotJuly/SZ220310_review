@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            如果对象中的具名方法会被预解析,那么a最终存储的是1,那么打印结果应该是1,1
+            如果对象中的具名方法不会被预解析,那么a最终存储的是函数体,那么打印结果应该是fun,fun
+
+
+            最终结果:
+                1.给对象的某个属性赋值一个匿名函数||具名函数,相当于是函数表达式,不会有预解析的效果
+
+            作用域的特殊情况:
+                1.具名函数表达式的函数名,只能在该函数中使用,不会影响到外层作用域
+                2.具名函数表达式的函数名,内部的值不能修改,是只读的
+        */
+        // var a = 1;
+        // var obj = {
+        //     a:2,
+        //     fn:function a(){
+        //         a=3;
+        //         console.log('a1',a)
+        //     }
+        // }
+
+        // obj.fn();
+        // console.log('a2',a)
+
+        //---------
+        // function a(){
+        //     // a=3;
+        //     console.log('a1',a)
+        // }
+        // var a;
+        // var obj;
+        // a = 1;
+        // obj = {
+        //     a:2,
+        //     fn:function a(){
+        //         // a=3;
+        //         console.log('a1',a)
+        //     }
+        // }
+
+        // obj.fn();
+        // console.log('a2',a)
+
+        //---------
+        // var a = 1;
+        // var obj = {
+        //     a:2,
+        //     fn:function a(){
+        //         // a=3;
+        //         console.log('a1',a)
+        //     }
+        // }
+
+        // 相当于是obj.fn = function(){}
+        // var a = function(){}
+
+        // obj.fn();
+        // console.log('a2',a)
+
+        //-----------
+        var a = 3;
+        (function a(){
+            a=6;
+            console.log('a1',a)
+        })();
+        console.log('a2',a)
+    </script>
+</body>
+</html>
