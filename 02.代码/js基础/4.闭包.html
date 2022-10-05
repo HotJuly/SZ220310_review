@@ -35,6 +35,37 @@
                 2.可以实现js模块化
                     使用闭包将某些数据缓存起来,变为私有数据,其他人无法修改
                     例如:JQuery
+
+            4.闭包的缺点(副作用)
+                1.将本该销毁的变量保存下来,需要花费更多的内存
+                内存泄漏    花费了更多的内存空间来实现功能
+                内存溢出    由于内存泄漏过多,最终超出了当前电脑内存所能存储的极限(存满了)
+                            结果就是程序宕机,无法正常使用当前项目
+
+            5.如何解决闭包的副作用
+                1.尽量减少使用闭包
+                2.将无用的闭包及时释放
+                    问题:为什么闭包不会被销毁
+                    原因:因为内部函数使用Scopes属性引用着闭包,而内部函数又被外部的变量引用着,
+                        而垃圾回收机制只会回收没人引用的东西
+                    解决:将外部对内部函数的引用释放掉即可
+                        如果同时有多个内部函数共享一个闭包对象,那么必须将使用到的内部函数全部释放销毁,
+                            否则闭包将永久存活
+
+            6.什么是闭包?
+                闭包从调试器中直观的看到是一个对象
+                    该对象内部会缓存变量的名字和变量的值
+
+                闭包,其实就是根据外层函数的词法环境以及内部函数的代码,产生的一个闭包对象
+                    在执行内部函数的定义时,会将当前函数所需要使用的变量,从变量对象中复制一份,
+                    保存在特殊对象中,而这个特殊对象就是闭包
+
+                问题:外部函数中,具有多个内部函数,都是用到了外层的部分变量,闭包会产生几个?
+
+            7.闭包的使用场景
+                函数防抖,函数节流
+                发送删除品牌等操作
+
         
         */
        /*
@@ -121,20 +152,119 @@
         // fns.addA();
         // fns.getA();
         //--------------------------
+        // 该案例,说明了如何释放闭包对象,解决闭包的副作用
+        // function wrap(){
+
+        //     function inner(){
+        //         console.log('a',a)
+        //     }
+
+        //     var a = 1;
+
+        //     return inner;
+        // }
+
+        // var result = wrap();
+        // result();
+        // result = null;
+        // -----------------
+        // 该案例,证明了如果多个内部函数使用了同一个变量,那么他们会共享这个一个变量
+        // function wrap(){
+        //     var a = 1;
+        //     // var b = 2;
+        //     // var c = 3;
+        //     // var d = 4;
+
+        //     function inner1(){
+        //         a++;
+        //         console.log('inner1',a)
+        //         // console.log(a,b)
+        //     }
+
+        //     function inner2(){
+        //         a+=2;
+        //         console.log('inner1',a)
+        //         // console.log(b,c)
+        //     }
+
+        //     return {
+        //         inner1,
+        //         inner2
+        //     };
+        // }
+
+        // var {inner1,inner2} = wrap();
+
+        // inner1();//     2
+        // inner1();//     3
+        // inner1();//     4
+        // inner1();//     5
+
+        // inner2();//     3       7
+        // inner2();//     5       9
+        // inner2();//     7       11
+        // inner2();//     9       13
+
+        //-------------------------------
+        // 该案例,证明了多个内部函数,会共享同一个闭包对象
+        // function wrap(){
+        //     var a = 1;
+        //     var b = 2;
+        //     var c = 3;
+        //     var d = 4;
+
+        //     function inner1(){
+        //         console.log(a,b)
+        //     }
+
+        //     function inner2(){
+        //         console.log(b,c)
+        //     }
+
+        //     return {
+        //         inner1,
+        //         inner2
+        //     };
+        // }
+
+        // var {inner1,inner2} = wrap();
+
+        //-----------------------------
         function wrap(){
-
-            function inner(){
-                console.log('a',a)
-            }
-
             var a = 1;
 
-            return inner;
+            function inner1(){
+                a++;
+                console.log('inner1',a)
+            }
+
+            function inner2(){
+                a+=2;
+                console.log('inner2',a)
+            }
+
+            return {
+                inner1,
+                inner2
+            };
         }
 
-        var result = wrap();
-        result();
+        var {inner1,inner2} = wrap();
 
+        inner1();//     2
+        inner1();//     3
+        inner1();//     4
+        inner1();//     5
+
+        inner2();//     3       7
+        inner2();//     5       9
+        inner2();//     7       11
+        inner2();//     9       13
+
+        inner1 = null;
+        inner2 = null;
+
+        // inner2();//    15
 
     </script>
 </body>

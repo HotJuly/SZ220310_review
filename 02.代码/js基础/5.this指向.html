@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        this指向
+            this是一个js的关键字,但是其实他就是一个变量(形参)而已
+                他的值是动态变化的
+                函数的形参是由开发者调用函数时,传入的实参决定的
+                函数的this是由js引擎在调用函数时,传入给this变量的
+                    像是一个由系统控制传入内容的形参
+
+            this内部会存储一个对象,这个对象代表着是谁在调用当前这个函数
+
+            this指向与声明位置无关,与调用方式有关
+
+            this的常见指向:
+                1.普通调用->window
+                    例如:a()
+                
+                2.隐式调用->方法所在的实例对象
+                    例如:obj.fn()
+                    注意:无论经过了多少层属性才找到了方法,只要关注与方法前面的对象是谁即可
+                        a.b.c.e.f.g.h.k();->k函数的this就是h
+
+                3.构造调用->当前函数的实例对象
+                    例如:new a();
+
+                4.显式调用->强行指定的this指向
+                    例如:call,apply,bind
+
+                    例如:a.call(obj)
+                    统一称呼:a称为被借调函数,call称为借调函数,obj是强行改变的this指向
+
+            特殊的this指向:
+                1.Vue
+                    生命周期,methods,computed,watch中的this都是当前组件实例对象
+                2.React
+                    a(){}  =>  该写法的this是undefined
+                    a=()=>{}  =>  该写法的this是当前组件实例对象
+                3.小程序
+                    生命周期,事件回调函数中,this指向都是当前页面的实例对象
+                4.定时器
+                    this指向window
+                5.事件回调函数
+                    this指向是当前绑定事件的事件源对象
+                6.箭头函数
+                    他没有自己的this,如果使用this就会找到外层作用域的this
+
+            面试题1:请问箭头函数能否被call.apply,bind方法强行改变this指向?
+            答案:不能,因为他没有自己的this
+
+            面试题2:请问箭头函数能否被new调用?
+            答案:不能,因为他没有自己的this,所以他无法创建自己的实例对象
+
+            面试题3:请问箭头函数是否具有原型对象?
+            答案:箭头函数没有自己的原型对象
+    */
+
+      // -----------------------
+      // 该案例,证明了无论函数声明在哪里,只要调用方式相同,this也相同
+      //   function wrap() {
+      //     function a() {
+      //       console.log(this);
+      //     }
+      //     a();
+      //   }
+      //   wrap();
+
+      // ------------------------
+      //   function a() {
+      //     console.log(this);
+      //   }
+      // //   a();
+      //   var obj = {
+      //     this:window,
+      //     fn:a
+      //   }
+      // //   obj.fn();
+
+      // //   a.b.c.e.f.g.h.k();
+
+      // // new a();
+      // a.call(obj);
+
+      //-------------------
+    //   var obj = {
+    //     name: "xiaoming",
+    //   };
+      var a = () => {
+        console.log(this);
+      };
+    //   a.call(obj)
+
+    //   new a();
+    console.dir(a);
+    function b(){}
+    console.dir(b);
+    </script>
+  </body>
+</html>
