@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 手写实现call方法
+
+      /*
+            统一词汇:被借调函数指的是a函数,借调函数指的是call,apply,bind
+            面试题:请问call和apply之间的区别
+            回答:
+                相同点:
+                    1.他们都可以通过传入第一个实参,强行改变被借调函数的this指向
+
+                    2.他们都会同步调用被借调函数
+
+                    3.如果不传入第一个实参(undefined或者null),那么被借调函数的this一定是window
+                        如果传入的是基本数据类型中的string,number,boolean,那么this就会是对应的包装类对象
+
+                    4.他们都会将被借调函数执行的结果,作为返回值进行return
+
+                不同点:
+                    1.传参个数不相同
+                        call方法传入实参个数0->无限大
+                            call方法的第二个实参开始的所有数据都会传给被借调函数使用
+
+                        apply方法传入实参个数0->2个
+                            apply方法会将第二个实参数组拆开之后传给被借调函数使用
+        
+        */
+
+      var obj = {
+        name: "xiaoming",
+      };
+
+      function a(x, y, z) {
+        console.log("a", this, x, y, z);
+        return x + y + z;
+      }
+
+      // a();
+      const result = a.call(2, 1, 2, 3);
+      // console.log('result',result)
+
+      // const result2 = a.apply(obj,[3,4,5]);
+      // console.log('result2',result2)
+
+      Function.prototype.myCall = function (thatThis, ...args) {
+        // console.log('args',args)
+        /*
+                this->a(被借调函数)
+                thatThis->obj(开发者希望的this指向)
+            */
+        if (thatThis === undefined || thatThis === null) {
+          thatThis = window;
+        }
+
+        if (typeof thatThis === "number") {
+            thatThis = new Number(thatThis);
+        }
+
+        if (typeof thatThis === "boolean") {
+            thatThis = new Boolean(thatThis);
+        }
+
+        if (typeof thatThis === "string") {
+            thatThis = new String(thatThis);
+        }
+
+        thatThis._fn = this;
+
+        const result = thatThis._fn(...args);
+
+        delete thatThis._fn;
+
+        return result;
+      };
+
+      // console.log(1)
+      const result = a.myCall(obj, 1, 2, 3, 4, 5, 6);
+      console.log(result);
+    </script>
+  </body>
+</html>

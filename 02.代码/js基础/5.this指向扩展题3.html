@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 手写实现bind方法
+
+      /*
+            统一词汇:被借调函数指的是a函数,借调函数指的是call,apply,bind
+            面试题:请问call和bind之间的区别
+            回答:
+                相同点:
+                  1.他们都会将传入的第一个实参作为被借调函数的this指向
+
+                  2.他们接收的实参个数相同
+                      都是0到无限大
+                        他们都会将第二个实参开始的数据,传递给被借调函数使用
+
+                  3.如果第一个实参没有传入(undefined或者null),那么this指向就会被变为window
+
+                不同点:
+                  1.调用时机不同
+                    call方法会同步调用被借调函数
+                    bind方法不会立即执行被借调函数
+
+                  2.返回值不同
+                    call方法的返回值是被借调函数的执行结果
+                    bind方法的返回值是一个被修改了this指向的全新函数
+
+                  3.修改this指向的时效性
+                    call方法只会修改当前本次调用的this指向,对未来使用没有任何影响
+                    bind方法会永久修改返回的全新函数的this指向
+                        即便再次使用call,apply,bind都无法修改该函数的this指向了
+
+                  4.传入实参的次数不同
+                    call方法由于是立即调用被借调函数,所以只有一次机会传入实参
+                    bind方法由于返回的是一个函数,所以一共具有两次传入实参的机会
+        */
+
+      var obj = {
+        name: "xiaoming",
+      };
+
+      function a(x, y, z) {
+        console.log("a", this, x, y, z);
+        return x + y + z;
+      }
+
+      // const result = a.call(obj,1,2,3);
+      // a();
+
+      // const result2 = a.bind(obj, 1, 2);
+      // // console.log(a===result2)
+      // result2(4);
+      // result2.call(window);
+
+      // Function.prototype.myBind = function(thatThis,...args){
+      //   /*
+      //     this->a(被借调函数)
+      //     thatThis->obj(开发者希望的this指向)
+      //   */
+
+      //   var that = this;
+
+      //   return function(...args2){
+      //     that.call(thatThis,...args,...args2);
+      //   }
+      // }
+      // const result2 = a.myBind(obj, 1, 2);
+      // result2(4);
+      // result2();
+      // result2();
+      // result2();
+      // result2();
+
+      /*
+      函数柯里化
+
+      
+      */
+      // function person(name,age,sex){
+      //   return {
+      //     name,
+      //     age,
+      //     sex
+      //   }
+      // }
+
+      // var p1 = person("xiaoming",29,"女");
+      // var p2 = person("xiaoming",23,"女");
+      // var p3 = person("xiaoming",36,"女");
+      // var p4 = person("xiaoming",58,"女");
+      // var p5 = person("xiaoming",3,"女");
+      // var p6 = person("xiaoming",7,"女");
+      // var p7 = person("xiaoming",19,"女");
+      // var p8 = person("xiaoming",29,"女");
+      // console.log(p1,p2)
+
+      //----------------
+      
+      // function person(sex){
+      //   return function(name,age){
+      //     return {
+      //       name,
+      //       age,
+      //       sex
+      //     }
+      //   }
+      // }
+
+      // var woman = person("女");
+      // var p1 = woman("xiaohong",29);
+      // var p2 = woman("xiaolv",38);
+      // console.log(p1,p2)
+
+      //------------------
+      
+      // function person(sex){
+      //   return function(age){
+      //     return function(name){
+      //       return {
+      //         name,
+      //         age,
+      //         sex
+      //       }
+      //     }
+      //   }
+      // }
+
+      // var woman = person("女");
+      // var young = woman(18);
+      // var p1 = young("xiaohong");
+      // var p2 = young("xiaolv");
+      // console.log(p1,p2)
+
+      //--------------
+      function person(sex,age,name){
+        return {
+          name,
+          age,
+          sex
+        }
+      }
+
+      var young = person.bind(null,"女",18);
+      var p1 = young("xiaoming");
+      var p2 = young("xiaohuang");
+      console.log(p1,p2);
+    </script>
+  </body>
+</html>
