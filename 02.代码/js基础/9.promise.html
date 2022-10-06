@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+        Promise
+            数据类型:函数(构造函数)
+            返回值:Promise的实例对象(简称p1)
+            接收参数个数:1个
+                1.执行器函数(回调函数)
+                    该函数会同步调用
+                    回调函数接收两个参数(都是函数)
+                        resolve
+                            将p1对象的状态变为成功状态
+                        reject
+                            将p1对象的状态变为失败状态
+
+            状态:3种
+                1.pending(默认值)
+                2.resolved(fulfilled)
+                3.rejected
+                    如果是失败状态,控制台会出现报错
+
+            注意点:
+                1.promise的状态是不可逆的,只能修改一次
+
+        .then方法
+            用处:用于监视p1对象的状态变化,
+                如果状态发生变化,会执行对应的回调函数
+
+                严格来说:只要p1对象的状态不是pending他就会执行对应的回调函数
+            数据类型:函数
+            接收参数个数:0-2个
+                第一个实参:成功的回调函数
+                    resolve方法会将自己的实参传递给成功的回调函数的形参
+
+                第二个实参:失败的回调函数
+                    可以阻止控制台中报错的提示,因为当前报错已经捕获到了
+                    resolve方法会将自己的实参传递给成功的回调函数的形参
+
+            返回值:
+                返回一定是一个全新的promise对象(简称p2)
+                控制p2状态
+                    变为成功
+                        1.只要回调函数中的代码全部执行结束,那么p2的状态就会变为成功状态
+                        2.如果返回值是一个成功的Promise对象,那么p2的状态会参考该对象,
+                            也变为成功状态
+
+                    变为失败
+                        1.如果回调函数中的代码执行失败/报错,那么p2的状态就会变为失败状态
+                        2.如果返回值是一个失败的Promise对象,那么p2的状态会参考该对象,
+                            也变为失败状态
+
+            注意:
+                1.无论回调函数中返回什么东西,都不会影响到.then函数的返回值
+                2.如果回调函数的返回结果,会作为p2对象的result值
+                3.如果需要执行对应的回调函数,但是又没有传入对应的回调函数,
+                    那么当前p2的状态就会参考p1的状态
+
+        .catch方法
+            用处:用于捕获失败的promise
+            数据类型:函数
+            接收参数个数:1个
+                接收一个失败的回调函数
+
+            .catch其实是.then的语法糖
+                .catch相当于是.then成功回调函数传空
+                .then(null,()=>{})
+            
+        */
+
+        // ----------------------------
+        // 通过该案例可知,promise的状态只能修改一次
+        // var p1 = new Promise((resolve,reject)=>{
+        //     // resolve();
+        //     // reject();
+
+        //     setTimeout(()=>{
+        //         resolve();
+        //     },2000)
+
+        //     setTimeout(()=>{
+        //         reject();
+        //     },3000)
+        // });
+        // console.log(p1)
+
+        //------------------------
+        // var p1 = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         resolve(1);
+        //         // reject('123');
+        //     },2000)
+        // });
+
+        // const p3 = Promise.resolve();
+
+        // const p2 = p1.then((data)=>{
+        //     console.log('success',data)
+        //     // throw new Error('xixi')
+        //     // return 123;
+        //     // return Promise.resolve();
+        //     // return Promise.reject();
+
+        //     return p3;
+        // },(error)=>{
+        //     console.log('fail',error)
+        // })
+
+        // console.log(p2,p3)
+
+        // -----------------------------
+        // 该案例,可以说明.then返回的promise对象的状态,与执行的是哪个回调函数无关
+        // const p1 = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         // resolve();
+        //         reject();
+        //     },2000)
+        // })
+
+        // p1
+        // .then(()=>{
+        //     console.log('1')
+        //     // throw new Error();
+        // },()=>{
+        //     console.log('2')
+        // })
+        // .then(()=>{
+        //     console.log('3')
+        // },()=>{
+        //     console.log('4')
+        // })
+
+        //------------------------
+        // const p1 = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         resolve();
+        //     },2000)
+        // })
+
+        // setTimeout(()=>{
+        //     p1.then(()=>{
+        //         console.log('success')
+        //     })
+        // },3000)
+
+        // Promise.resolve().then(()=>{
+        //     console.log('1')
+        // })
+
+        //----------------------------
+        // const p1 = new Promise((resolve,reject)=>{
+        //     setTimeout(()=>{
+        //         // resolve();
+        //         reject();
+        //     },2000)
+        // })
+
+        // p1
+        // .then(null,null)
+        // .then(()=>{
+        //     console.log('3')
+        // },()=>{
+        //     console.log('4')
+        // })
+
+        // ---------------------------
+        const p1 = new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                reject();
+                // resolve();
+            },2000)
+        })
+
+        p1
+        .then(()=>{
+            console.log('1')
+        },()=>{
+            console.log('2')
+            throw new Error();
+        })
+        .then(()=>{
+            console.log('3')
+            return 123;
+        })
+        .catch(()=>{
+            console.log('4')
+        })
+        
+    </script>
+</body>
+</html>
