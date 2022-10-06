@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /*
+        async和await(他们其实就是Promise+.then的语法糖)
+
+            1.async可以不配合await使用,但是await必须配合async使用
+            2.await会阻塞后续代码的执行,但是范围只在当前的async函数中,
+                对async函数之外的代码没有影响
+
+                注意:虽然会阻塞后续代码执行,但是不会阻塞await右侧的代码执行
+
+            3.await右侧可以书写promise对象,右侧也可以书写非promise对象的数据类型
+                await表达式的返回值就是右侧promise的result值
+
+            4.async函数的返回值一定是一个全新的promise对象(简称p1)
+                控制状态
+                    变为成功
+                        1.只要async函数中的代码全部执行结束
+                        2.async函数return一个成功的promise对象
+
+                    变为失败
+                        1.async函数中的代码没能成功执行结束
+                            -出现报错
+                            -await右侧的promise对象变为失败状态
+
+                        2.async函数return一个失败的promise对象
+
+
+            注意:
+                1.无论await右侧的promise对象是否是立即成功,后续代码一定都在.then中作为微任务
+                2.如果await右侧不是promise对象,那么await表达式的结果就是右侧的值
+        
+        */
+    //   async function a() {
+    //     console.log("1");
+    //     const result = await new Promise((resolve)=>{
+
+    //         console.log('5')
+
+    //         setTimeout(()=>{
+    //             resolve(333)
+    //         },2000)
+    //     })
+
+    //     console.log("2",result);
+    //   }
+
+    //   console.log("3");
+    //   a();
+    //   console.log("4");
+
+      //----------------------------
+      async function a() {
+        console.log("1");
+        
+        const result = await new Promise((resolve,reject)=>{
+            resolve(333)
+            // reject(333)
+        })
+
+        // throw new Error();
+
+        // const result = await 100;
+
+        console.log("2");
+
+        // return Promise.resolve();
+        return Promise.reject();
+      }
+
+      console.log("3");
+      const b = a();
+      console.log("4",b);
+
+      //--------------------------
+    // 转换为promise+.then写法
+    
+    // function a() {
+    //     console.log("1");
+
+    //     return new Promise((resolve)=>{
+
+    //         console.log('5')
+
+    //         setTimeout(()=>{
+    //             resolve(333)
+    //         },2000)
+    //     })
+    //     .then(()=>{
+    //         console.log("2");
+    //         // return Promise.resolve();
+    //     })
+    //   }
+
+    //   console.log("3");
+    //   const b = a();
+    //   console.log("4",b);
+    </script>
+  </body>
+</html>
