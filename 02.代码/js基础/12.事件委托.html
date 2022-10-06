@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="wrap">
+      <h1>A</h1>
+      <h1>B</h1>
+      <div>C</div>
+      <div>D</div>
+    </div>
+    <script>
+      //没有事件委托的写法
+      // var h1s = document.querySelectorAll('h1');
+      // for (let index = 0; index < h1s.length; index++) {
+      //     const element = h1s[index];
+      //     element.onclick=function(){
+      //         console.log('click触发')
+      //     }
+      // }
+
+      // 基础版事件委托
+        // var wrap = document.querySelector("#wrap");
+        // wrap.onclick = function (event) {
+        //   console.log("click触发",this,event.target);
+        // };
+
+      //   终极版事件委托(可以区分触发角色)
+      function fn() {
+        console.log("click触发",this,event.target);
+      }
+
+      function bindEvent2(ele, type, fn, selector) {
+        // 实际上,真正的事件回调函数是一个全新的匿名函数,并不是我们传入的fn函数
+        ele.addEventListener(type, function (event) {
+            /*
+                触发者:event.target
+                事件源:this
+            */
+          const target = event.target;
+          if (selector) {
+            // matches方法可以检查target元素是否满足传入的选择器要求
+            if (target.matches(selector)) {
+              fn.call(target, event);
+            }
+          } else {
+
+            // 为什么需要.call调用,因为如果直接调用fn,那么fn中的this就会变为window对象
+            // 然而我们在写fn函数的时候,会将fn中this想象成是事件源对象
+            fn.call(ele, event);
+            // fn();
+          }
+        });
+      }
+
+      var wrap = document.querySelector("#wrap");
+
+      bindEvent2(wrap, "click", fn, "h1");
+    </script>
+  </body>
+</html>
