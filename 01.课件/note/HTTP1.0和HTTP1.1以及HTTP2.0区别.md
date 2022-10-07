@@ -20,12 +20,6 @@
 
 ​			HTTP 1.1支持长连接（PersistentConnection）和请求的流水线（Pipelining）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，在HTTP1.1中默认开启Connection： keep-alive
 
-​	注意:
-
-​		1.Chrome和Firefox最多可以存在6个长连接,但是长连接的数量服务器也可以控制
-
-​		2.浏览器可以跟每个服务器建立最多6个长连接(此处可以实现性能优化,如果请求资源过多,就可以将资源放在多个服务器上,提高加载速度)
-
 推荐文章:https://www.cnblogs.com/xianyulaodi/p/5755079.html
 
 
