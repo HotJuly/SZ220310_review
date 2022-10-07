@@ -10,7 +10,9 @@ export default {
   props: {
     msg: String
   },
+  a:667,
   mounted(){
+    // console.log('Hello',this.$options.a)
   }
 }
 </script>
