@@ -1,14 +1,11 @@
 <template>
   <div id="app">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-
-    <h1 v-if="isShow">我是h1</h1>
-    <h2 v-else>我是h2</h2>
-
-    <input ref="input777" v-if="isEdit" type="text">
-    <button v-else @click="changeEdit">添加</button>
+    <h1>name:{{user.name}}</h1>
+    <h1>age:{{user.age}}</h1>
+    <h1>sex:{{user.sex}}</h1>
+    <button @click="clickHandler">展示性别</button>
+    <button @click="clickHandler1">隐藏年龄</button>
   </div>
 </template>
 
@@ -17,60 +14,55 @@ import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  data(){
-    return {
-      isShow:true,
-      isEdit:false
-    }
-  },
   components: {
     HelloWorld
   },
-  mounted(){
-    // this.isShow=false;
-    // console.log('isShow',this.isShow)
-    // debugger
-    /*
-      问题1:请问Vue更新数据是同步更新还是异步更新?
-      答案:同步更新
-    
-      问题2:请问Vue更新DOM是同步更新还是异步更新?
-      答案:异步更新,其实就是使用了nextTick更新DOM的
-    */
-
-    // this.isEdit = true;
-    // // 如果这里有一个看不见的nextTick,一切就说通了
-
-    // Promise.resolve().then(()=>{
-    //   console.log('1');
-    // })
-
-    // this.$nextTick(()=>{
-    //   console.log('2')
-    // })
-
-    // Promise.resolve().then(()=>{
-    //   console.log('3');
-    // })
-
-    // this.$nextTick(()=>{
-    //   console.log('4')
-    // })
-  },
-  methods:{
-    changeEdit(){
-
-      this.isEdit=true;
-      
-      this.$nextTick(()=>{
-        this.$refs.input777.focus();
-      })
-
-      // nextTick接收一个回调函数,该回调函数会在DOM更新之后执行
-      // 也就是说在nextTick中可以获取到当前最新的DOM节点
-      // nextTick是一个微任务
-      // 注意:Vue的nextTick内部使用的是.then,与node的nextTick不是同一个
+  data() {
+    return {
+      user: {
+        name: "xiaoming",
+        age: 18
+      }
     }
+  },
+  methods: {
+    clickHandler() {
+      // 响应式属性:当属性值发生修改之后,页面会展示出最新的结果
+      /*
+        响应式属性创建时机:
+          1.当组件初始化的时候,data中返回对象中的所有属性都将是响应式的
+          2.当响应式属性值发生修改的时候,赋值的数据是一个对象的话,
+            那么该对象中的所有属性都将是响应式的
+      
+      */
+      // this.user.sex = "女";
+      // this.user = {
+      //   ...this.user,
+      //   sex:"女"
+      // }
+
+
+      this.user = {
+        ...this.user
+      }
+      // Vue.set()
+      this.$set(this.user,"sex","女");
+      // this.user.sex = "女";
+      console.log(this.user);
+
+      setTimeout(()=>{
+        this.user.sex = "男";
+        console.log(this.user);
+      },2000)
+    },
+    clickHandler1(){
+      // delete this.user.age;
+      // this.$delete除了拥有delete关键字的功能,还会导致页面重新渲染
+      this.$delete(this.user,"age")
+      console.log(this.user)
+    }
+  },
+  mounted(){
   }
 }
 </script>
