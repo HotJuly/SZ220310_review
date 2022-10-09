@@ -9,11 +9,9 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
-    a:Function
+    msg: String
   },
   mounted(){
-    this.a(123);
   }
 }
 </script>

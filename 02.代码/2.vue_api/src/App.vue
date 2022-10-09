@@ -1,68 +1,84 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <h1>name:{{user.name}}</h1>
-    <h1>age:{{user.age}}</h1>
-    <h1>sex:{{user.sex}}</h1>
-    <button @click="clickHandler">展示性别</button>
-    <button @click="clickHandler1">隐藏年龄</button>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App" :a="$options.a" /> -->
+    <HelloWorld msg="Welcome to Your Vue.js App" :a="a" />
+    <!-- <h1>name:{{user.name}}</h1> -->
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
+    <h2>doubleNum:{{doubleNum}}</h2>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 
+// function a(data){
+//   console.log(this,data)
+// }
+
 export default {
   name: 'App',
+  data() {
+    return {
+      // a:1,
+      // 面试题:我现在有一个数据想要放在data中,但是又不希望他有响应式的效果
+      // _bbc:2,
+      // user:Object.freeze({
+      //   name:"123",
+      // })
+      num: 2
+    }
+  },
   components: {
     HelloWorld
   },
-  data() {
-    return {
-      user: {
-        name: "xiaoming",
-        age: 18
-      }
-    }
+  mounted() {
+    // console.log(this.a,this._bbc)
+    // this.user = Object.freeze({
+    //     name:"123"
+    // })
+    // setTimeout(() => {
+    //   this.user.name=666
+    // }, 2000);
+  },
+  a(data) {
+    console.log(this, data)
+    this.num = data;
   },
   methods: {
-    clickHandler() {
-      // 响应式属性:当属性值发生修改之后,页面会展示出最新的结果
-      /*
-        响应式属性创建时机:
-          1.当组件初始化的时候,data中返回对象中的所有属性都将是响应式的
-          2.当响应式属性值发生修改的时候,赋值的数据是一个对象的话,
-            那么该对象中的所有属性都将是响应式的
-      
-      */
-      // this.user.sex = "女";
-      // this.user = {
-      //   ...this.user,
-      //   sex:"女"
-      // }
+    a(data) {
+      // methods中的方法,this都会被使用bind方法强行指定为当前组件实例对象
+      // 简单点说:就是方法写在谁的methods中,this就一定是谁
 
-
-      this.user = {
-        ...this.user
-      }
-      // Vue.set()
-      this.$set(this.user,"sex","女");
-      // this.user.sex = "女";
-      console.log(this.user);
-
-      setTimeout(()=>{
-        this.user.sex = "男";
-        console.log(this.user);
-      },2000)
-    },
-    clickHandler1(){
-      // delete this.user.age;
-      // this.$delete除了拥有delete关键字的功能,还会导致页面重新渲染
-      this.$delete(this.user,"age")
-      console.log(this.user)
+      console.log(this, data)
+      this.num = data;
     }
   },
-  mounted(){
+  computed: {
+    doubleNum() {
+      console.log('1')
+      return this.num * 2;
+    }
+  },
+  watch: {
+    num() {
+      console.log('num你飘了')
+    },
+    // user(){
+    //watch是浅监听
+    // }
+    user: {
+      handler() {
+        // 这种写法就是深度监视,无论是user属性发生变化,还是user内部的某个属性发生变化都会监视的到
+      },
+      deep: true,
+      immediate:true
+    }
   }
 }
 </script>
