@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>我是hello组件</h2>
+    <h1>{{ text666 }}</h1>
+    <h2 @click="clickHandler">我是hello组件</h2>
   </div>
 </template>
 
@@ -9,18 +9,20 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    value:String,
+    text666:String
   },
   mounted(){
-    console.log('获取父组件的数据',this.$parent)
-    this.$parent.msg="666"
-    // 以上代码相当于是父组件中调用以下代码
-    // this.msg="666"
   },
   methods:{
     clickHandler(){
-      console.log('clickHandler')
+      this.$emit('input999',666);
     }
+  },
+  model:{
+    prop:"text666",
+    event:"input999"
   }
 }
 </script>

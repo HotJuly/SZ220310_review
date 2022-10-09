@@ -1,31 +1,32 @@
 <template>
   <div id="app">
-    <h4>APP的text:{{text}}</h4>
-    <HelloWorld msg="Welcome to Your Vue.js App" v-model="text"/>
-    <!-- 以下代码是v-model的原理分析 -->
-    <!-- <HelloWorld :value="text" @input="(data)=>{text = data}"/> -->
-
-
-    <!-- <input type="text" v-model="text"> -->
-    <!-- 以下代码是v-model的原理分析 -->
-    <!-- <input type="text" :value="text" @input="(event)=>{text=event.target.value}"> -->
+    <!-- <h4>我是APP的数据:{{msg}}</h4>
+    <HelloWorld ref="hello" msg="Welcome to Your Vue.js App"/> -->
+    <BigImage/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import BigImage from './components/BigImage.vue'
 
 export default {
   name: 'App',
   data(){
     return {
-      text:"你好"
+      msg:123
     }
   },
   components: {
-    HelloWorld
+    HelloWorld,
+    BigImage
   },
   mounted(){
+    // console.log('msg',this.$data)
+    // console.log('App',this.$children[0].msg)
+    // this.$children[0].clickHandler();
+
+    // console.log(this.$refs.hello)
   }
 }
 </script>
