@@ -1,23 +1,12 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <slot name="default"></slot>
-    <slot name="header"></slot>
-    <slot name="footer" :msg="msg"></slot>
-    <h2>我是hello组件</h2>
+  <div class="b">
+    <h1>B</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  data(){
-    return{
-      msg:"hello",
-    }
-  },
-  mounted(){
-  }
+  name: 'B'
 }
 </script>
 
