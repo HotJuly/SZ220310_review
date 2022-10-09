@@ -1,32 +1,25 @@
 <template>
   <div id="app">
-    <!-- <h4>我是APP的数据:{{msg}}</h4>
-    <HelloWorld ref="hello" msg="Welcome to Your Vue.js App"/> -->
-    <BigImage/>
+    <!-- <HelloWorld :msg.sync="msg"/> -->
+    <HelloWorld :msg="msg" @update:msg="(data)=>{msg = data}"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import BigImage from './components/BigImage.vue'
 
 export default {
   name: 'App',
   data(){
     return {
-      msg:123
+      msg:"hello world"
     }
   },
   components: {
-    HelloWorld,
-    BigImage
+    HelloWorld
   },
   mounted(){
-    // console.log('msg',this.$data)
-    // console.log('App',this.$children[0].msg)
-    // this.$children[0].clickHandler();
-
-    // console.log(this.$refs.hello)
+    this.$bus.$emit('sendMsg',"我是APP的数据")
   }
 }
 </script>

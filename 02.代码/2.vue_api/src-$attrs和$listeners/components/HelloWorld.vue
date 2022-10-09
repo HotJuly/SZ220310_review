@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2 @click="click1">我是hello组件</h2>
+    <h2>我是hello组件</h2>
   </div>
 </template>
 
@@ -9,18 +9,15 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    a:Number
   },
   mounted(){
-    this.$bus.$on('sendMsg',(data)=>{
-      console.log('sendMsg',data)
-    })
-  },
-  methods:{
-    click1(){
-      // console.log('click1')
-      this.$emit('update:msg',"我是修改之后的数据")
-    }
+    // $attrs中会收集props不要的标签属性
+    // console.log('props',this.a,this.b,this.c)
+    // console.log('attrs',this.$attrs)
+
+    console.log('$listeners',this.$listeners)
   }
 }
 </script>

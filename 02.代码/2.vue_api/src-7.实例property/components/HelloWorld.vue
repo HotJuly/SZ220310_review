@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2 @click="click1">我是hello组件</h2>
+    <h2>我是hello组件</h2>
   </div>
 </template>
 
@@ -11,17 +11,17 @@ export default {
   props: {
     msg: String
   },
-  mounted(){
-    this.$bus.$on('sendMsg',(data)=>{
-      console.log('sendMsg',data)
-    })
-  },
-  methods:{
-    click1(){
-      // console.log('click1')
-      this.$emit('update:msg',"我是修改之后的数据")
-    }
-  }
+  // mounted(){
+  //   console.log('获取父组件的数据',this.$parent)
+  //   this.$parent.msg="666"
+  //   // 以上代码相当于是父组件中调用以下代码
+  //   // this.msg="666"
+  // },
+  // methods:{
+  //   clickHandler(){
+  //     console.log('clickHandler')
+  //   }
+  // }
 }
 </script>
 
