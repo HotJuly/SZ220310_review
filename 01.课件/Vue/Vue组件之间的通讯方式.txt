@@ -21,3 +21,54 @@
 			因为方法中的this是父组件
 
 		小总结:子传父的基于父传子实现的,父组件传递的是函数,子组件传递的才是数据
+
+2.provide/inject
+	适用场景:祖孙组件
+	流程:
+		1.祖先组件在自己的配置对象中添加provide属性,向外暴露数据
+		2.后代组件在自己的配置对象中添加inject属性,接收所需要的数据
+
+		注意点:
+			1.provide暴露出来的数据,默认是非响应式
+			2.如果想要让暴露出来的数据变为响应式数据,那么就是用Vue.observable将暴露的对象变为响应式对象即可
+			3.如果项目中存在多个provide,那么inject查找数据的时候,是从内向外找最近的provide,如果没有才会继续向上查找
+
+3.自定义事件
+	v-model
+		对input标签使用
+			1.将data中某个状态的数据作为默认值展示在input框中
+				<input type="text" :value="text">
+
+			2.当用户修改input框中的内容时,会自动修改对应的状态数据
+				事件源:input标签
+				事件名:input(默认值)
+    				<input type="text" :value="text" @input="(event)=>{text=event.target.value}">
+
+		对组件标签使用
+			1.将data中某个状态的数据作为标签属性传递给子组件(默认属性名:value)
+    				<HelloWorld :value="text"/>
+
+			2.给子组件绑定自定义事件(默认事件名是input)子组件可以通过该自定义事件向父组件传参,实现修改父组件数据的功能
+				<HelloWorld :value="text" @input="(data)=>{text = data}"/>
+
+		扩展点:v-model指令如果对组件标签使用,可以在子组件的配置对象中,使用model配置属性对属性名以及事件名进行自定义操作
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ text666 }}</h1>
-    <h2 @click="clickHandler">我是hello组件</h2>
+    <h1>{{ msg }}</h1>
+    <h2>我是hello组件</h2>
   </div>
 </template>
 
@@ -10,19 +10,10 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String,
-    value:String,
-    text666:String
+    a:Function
   },
   mounted(){
-  },
-  methods:{
-    clickHandler(){
-      this.$emit('input999',666);
-    }
-  },
-  model:{
-    prop:"text666",
-    event:"input999"
+    this.a(123);
   }
 }
 </script>
