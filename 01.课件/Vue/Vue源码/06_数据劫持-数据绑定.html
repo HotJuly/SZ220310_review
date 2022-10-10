@@ -7,14 +7,33 @@
   <body>
     <div id="app">
       <p class="b">{{msg}}</p>
-      <p class="b">{{person.name}}</p>
-      <p class="b">{{arr.1}}</p>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script src="./js/compile.js"></script>
     <script src="./js/mvvm.js"></script>
     <script>
+      /*
+        MVVM源码其实是Vue1的源码,不是Vue2源码
+          Vue1内部源码相对比较简单,容易上手
+          而且实际上Vue2中的响应式源码用的基本都是Vue1的
+
+        Vue1源码中,没有虚拟DOM,没有DIFF算法,没有生命周期
+      
+        学习目的:
+          1.面试的时候给面试官讲解
+            所以,我们需要将源码中的重要环节写成流程文档
+
+          2.响应式到底是如何实现的?
+
+          3.Vue是如何将页面上的插值语法变成对应的状态数据
+
+        源码技巧:
+          1.没有调用的函数,不要看
+          2.每次进行函数调用的时候,都搞清楚,当前函数的参数和this
+      
+      */
+     
       var vm = new MVVM({
         el: "#app",
         data: {
@@ -22,16 +41,9 @@
           person:{
             name:"xiaoming",
             msg:"123"
-          },
-          arr:[1,2,3]
+          }
         }
       });
-
-      // vm.msg = 'hello atguigu';
-      setTimeout(()=>{
-        vm.arr[1] = 6;
-      },3000)
-
 
     </script>
   </body>
