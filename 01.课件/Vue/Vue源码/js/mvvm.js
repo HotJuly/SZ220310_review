@@ -125,6 +125,33 @@ function MVVM(options) {
   this.$compile = new Compile(options.el || document.body, this);
   // this.$compile = new Compile("#app", vm);
 
+
+  /*
+    dep和watcher之间映射关系的收集
+      目的:
+        让每个响应式属性知道自己被哪些插值语法使用
+        让每个插值语法都能知道自己用了哪几个响应式属性
+
+      流程:
+        1.在bind方法中会new Watcher,创建watcher的实例对象
+        2.watcher对象会给自己身上添加一个value属性,属性值是get方法的返回值
+        3.get方法中,会将Dep.target修改为当前的watcher对象
+        4.使用getVMVal方法,读取当前插值表达式对应的结果
+          在读取结果的过程中,会触发数据劫持的get方法
+        5.get方法中会调用dep.depend方法,开展dep和watcher的映射关系收集
+        6.调用watcher.addDep(dep),在addDep方法中,
+          watcher对象会使用depIds对象收集与自己相关的dep对象,同时调用dep.addSub(this)
+        7.在addSub方法中,dep对象会使用subs数组收集与自己相关的插值表达式
+  */
+ /*
+  响应式更新流程:
+    1.执行vm.msg="hello world",会触发数据代理msg的set方法
+    2.数据代理的set方法中,会修改_data中的对应属性值,会触发数据劫持的set方法
+    3.如果新值不等于旧值,那么就会执行dep.notify方法
+    4.notify方法中,会将当前dep对象的subs数组进行遍历,通知每个watcher对象进行update更新
+    5.update方法中,会调用之前使用闭包缓存下来的指定更新器函数,更新对应的节点
+ 
+ */
 }
 
 MVVM.prototype = {
