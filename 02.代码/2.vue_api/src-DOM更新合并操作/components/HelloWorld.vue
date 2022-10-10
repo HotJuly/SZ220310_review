@@ -11,18 +11,7 @@ export default {
   props: {
     msg: String
   },
-  beforeCreate(){
-    console.log('----------Hello beforeCreate--------')
-  },
-  created(){
-    console.log('----------Hello created--------')
-  },
-  beforeMount(){
-    
-    console.log('----------Hello beforeMount--------');
-  },
   mounted(){
-    console.log('----------Hello mounted--------');
   }
 }
 </script>

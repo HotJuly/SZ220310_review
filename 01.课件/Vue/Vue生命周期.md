@@ -5,14 +5,20 @@
 2. 阶段划分
    1. 初始化阶段
       1. beforeCreate
+         1. **beforeCreate之前在初始化事件和生命周期**
       2. created
          1. **发送请求**
             1. **此处发送请求会更早出去,理想状态下,请求也会更早回来,页面看到数据也就越快**
          2. **此处如果做太多的事情,会阻塞后续代码的执行,也就是会导致页面延迟渲染**
             1. **所以,不要在created里面做太多复杂的逻辑操作和数据处理**
+         3. **beforeCreate之后created之前,Vue在将methods,computed中的内容给this注入一份,同时还做了数据代理以及数据劫持**
       3. beforeMount
-      4. mounted
-         1. **发送请求**
+         1. **created之后beforeMount之前,首先判断是否具有el胡总恶化调用$mount,再开始找到对应的模版代码,最终将模版代码编译成为render函数**
+         2. **优先级:render函数>template>index.html**
+         3. **很多人错误的点,其实beforeMount之前只是编译得到的render函数,但是并没有调用该render函数**
+         4. **render函数是用于创建当前组件的虚拟DOM对象的**
+      4. **mounted
+         1. ****发送请求**
             1. **此处发送请求晚于created,所以返回数据的时间会比较晚,页面看到数据也会比较慢**
             2. **此处做任何事情都不会阻塞页面的展示,能更快看到页面**
          2. **操作DOM**
@@ -20,6 +26,7 @@
             2. **滑动库**
          3. **开启定时器**
          4. **绑定自定义事件**
+         5. **beforeMount之后mounted之前,Vue会调用render函数创建虚拟DOM,再使用虚拟DOM对象创建真实DOM,最终将创建的真实DOM对象替换掉页面上对应的el元素**
    2. 更新阶段
       1. beforeUpdate
          1. beforeUpdate执行的时候,数据已经是最新的了,但是页面还是旧的效果

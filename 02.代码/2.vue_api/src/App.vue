@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <h1>{{arr[0]}}</h1>
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
@@ -15,25 +14,27 @@ export default {
   },
   data(){
     return{
-      arr:[1,2,3]
+      msg:"我是初始化的数据"
     }
   },
+  beforeCreate(){
+    console.log('----------App beforeCreate--------')
+    // console.log('----------beforeCreate--------',this,this.$data,this.msg,this.$el)
+  },
+  created(){
+    console.log('----------App created--------')
+    // console.log('----------created--------',this,this.$data,this.msg,this.$el)
+  },
+  beforeMount(){
+    // console.log('----------beforeMount--------',this,this.$data,this.msg,this.$el)
+    // $vnode存放的是父组件的虚拟DOM,_vnode存放的是当前组件的虚拟DOM
+    // console.log('----------beforeMount--------',this.$vnode,this._vnode)
+    
+    console.log('----------App beforeMount--------');
+  },
   mounted(){
-    // setTimeout(()=>{
-    //   // this.arr[0]=6;
-    //   // console.log('arr',this.arr)
-    //   this.arr.splice(0,1,6)
-    //   console.log('arr',this.arr)
-    // },2000)
-
-    var arr = [3,4,5];
-
-    setTimeout(()=>{
-      this.arr[0]=6;
-      
-      arr.splice(0,1,6);
-      console.log('arr',arr)
-    },2000)
+    // console.log('----------mounted--------',this,this.$data,this.msg,this.$el)
+    console.log('----------App mounted--------');
   }
 }
 </script>
