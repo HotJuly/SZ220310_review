@@ -7,6 +7,7 @@
   <body>
     <div id="app">
       <p class="b">{{msg}}</p>
+      <p>{{arr.0}}</p>
     </div>
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
@@ -41,12 +42,14 @@
           person:{
             name:"xiaoming",
             msg:"123"
-          }
+          },
+          arr:[1,2,3]
         }
       });
 
       setTimeout(()=>{
-        vm.msg="hello world";
+        // vm.msg="hello world";
+        vm.arr[0]=3;
       },2000)
 
     </script>
