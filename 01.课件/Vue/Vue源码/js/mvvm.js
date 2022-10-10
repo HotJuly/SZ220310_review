@@ -78,6 +78,8 @@ function MVVM(options) {
       3.walk方法中,会使用Object.keys获取到data对象所有的直系属性名,并调用defineReactive方法开始数据劫持
       4.在defineReactive中,
         -创建一个全新的dep对象
+          总结:每个响应式属性都会生成一个对应的dep对象
+
         -判断属性值是否是对象,如果是就进行深度数据劫持,回到流程1
         -使用Object.defineProperty方法将data对象上所有的属性都进行重写
           将原先的value值属性改为get/set属性
@@ -94,7 +96,34 @@ function MVVM(options) {
   observe(data, this);
   // observe(this._data, vm);
 
+  /*
+    MVVM源码第三部分:模版解析
+    目的:
+      1.将页面上指定元素的内容作为模版解析,将内部出现的插值语法变成对应的状态数据
+  
+    流程:
+      1.将options.el属性传入Compile方法,创建compile对象
+        如果传入的数据不是真实DOM,他会自动找到页面上的真实DOM
+      2.将真实DOM节点中所有的子节点全部转移到fragment中
+      3.调用init方法开始解析文档碎片中的所有节点,取出每个子节点进行对应操作
+        -如果当前节点是元素节点,就会获取所有的标签属性,解析Vue的指令
+        -如果当前节点是文本节点,而且满足插值语法的正则表达式
+          调用bind方法
+
+        如果当前节点具有子节点,那么就继续递归编译元素
+
+      4.在bind方法中
+        -找到对应的文本更新器函数(textUpdater方法)
+        -使用_getVMVal方法,获取到对应属性的属性值
+        -调用文本更新器函数,通过原生DOM操作,更新对应的节点的文本内容
+
+        注意:在bind方法中会创建watcher对象,每个插值语法都会生成一个对应的watcher对象
+      5.最终当所有节点都解析结束之后,会将文档碎片对象用appendChild方法插入到页面上
+  
+  */
+
   this.$compile = new Compile(options.el || document.body, this);
+  // this.$compile = new Compile("#app", vm);
 
 }
 
