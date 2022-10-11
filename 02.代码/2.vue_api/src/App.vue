@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <ul>
-      <li v-for="(item,index) in arr" :key="index">
-        <label>{{item}} :</label>
-        <input type="text" :value="item">
-      </li>
-    </ul>
-    <button @click="add">添加</button>
+    <router-view></router-view>
+    <router-link to="/home">toHome</router-link>
+    <!-- <router-link to="/about">toAbout</router-link> -->
+    <button @click="toAbout">toAbout</button>
+
+
+    <h2 v-show="$route.meta.isShow">我是footer</h2>
   </div>
 </template>
 
@@ -14,19 +14,22 @@
 
 export default {
   name: 'App',
-  data() {
-    return {
-      arr: [1, 2, 3, 4, 5]
-    }
-  }, 
-  methods: {
-    add(){
-      this.arr.splice(1,0,6);
+  methods:{
+    toAbout(){
+      this.$router.push('/about')
+      // this.$router.replace('/about')
     }
   }
 }
 </script>
 
 <style>
-
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>
