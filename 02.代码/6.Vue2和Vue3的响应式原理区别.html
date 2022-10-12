@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Vue2响应式核心API
+        // 数据劫持就是使用Object.defineProperty方法将data对象上所有的属性都变成get/set函数,
+        // 可以监视到用户对数据的修改
+        // var data = {
+        //     msg:"小明1"
+        // }
+
+        // // 该API只能监视对属性的修改和读取,无法监视到对属性的新增和删除
+        // // 所以Vue2中才出现了两个API:Vue.set和Vue.delete
+        // Object.defineProperty(data,"msg",{
+        //     get:function(){
+        //         console.log('get')
+        //     },
+        //     set:function(){
+        //         console.log('set')
+        //     }
+        // })
+
+        // data.msg="小明2";
+
+        // console.log(data.msg)
+
+        // Vue3响应式原理
+        // Vue3中,ref对象上,也有使用到Object.defineProperty方法重写了value属性,变为响应式属性
+        // reactive内部使用的是Proxy和Reflect两个重要API实现的响应式原理
+        // 元对象,是真正具有数据的对象
+        var data = {
+            name:"haha",
+            msg:"小明1"
+        }
+
+        // var user = reactive(data)
+        // 代理对象,是用于实现转发功能对象,他身上没有数据,但是他可以找元对象获取数据
+        var proxyObj = new Proxy(data,{
+            get(target, property){
+
+                console.log('get')
+
+                // return target[property]
+                return Reflect.get(target, property);
+            },
+            set(target, property, value){
+
+                console.log('set',target, property, value)
+
+                // target[property] = value;
+                Reflect.set(target, property, value);
+
+                // 在元对象的数据修改完之后,调用dep.notify方法通知DOM进行更新
+                // dep.notify();
+            },
+            deleteProperty(target,property){
+                // console.log('deleteProperty')
+
+                // delete target[property];
+                Reflect.deleteProperty(target, property)
+
+                // 通知DOM进行更新
+                // dep.notify()
+            },
+            has(){
+                return true;
+            },
+            getPrototypeOf(){
+                return {
+                    name:"隔壁老王"
+                }
+            }
+        });
+
+        // console.log(proxyObj,data)
+        // 直接操作元对象,数据会发生变化,但是proxy不会监视到本次修改,所以Vue3中这么写没有响应式效果
+        // data.msg = 123;
+        // console.log(data)
+
+        // proxyObj.msg = 123;
+        // console.log(proxyObj.msg)
+
+        // 问题:为什么Vue2中数组的下标没有响应式效果,但是Vue3的有
+        /*  
+            原因:
+                1.Vue2如果想要实现数组的下标具有响应式效果,就必须监视这些下标,会产生对应数量的dep对象
+                2.Vue3则不同,Vue3只需要生成一个代理对象,用户对代理对象的任何操作,都会被代理对象监视到
+                    也就是说,无论数组有多少个下标,我们都只监视一次,监视proxyObj
+        
+        */
+
+        /*
+            问题:为什么Vue2中需要Vue.set方法,Vue3中就废弃了
+            原因:
+                1.Vue2中,由于Object.defineProperty他只会对data中所有的属性名进行数据劫持,
+                    无法监视到后续新增的属性,所以才需要Vue.set
+                2.Vue3中,我们对代理对象新增属性的操作,会被Proxy监视到,触发set方法,所以不需要特殊对象
+        
+        */
+        // proxyObj.age="18";
+
+        // delete proxyObj.name;
+        // console.log('data',data)
+
+        // console.log('aaa' in proxyObj)
+
+        const prototype = Object.getPrototypeOf(proxyObj);
+        console.log(prototype)
+
+
+    </script>
+</body>
+</html>
